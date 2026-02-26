@@ -9,7 +9,7 @@ export function middleware(request: NextRequest) {
     const password = request.headers.get('authorization')
 
     if (password !== `Bearer ${process.env.ADMIN_PASSWORD}`) {
-      return new NextResponse('Access denied', {
+      return new NextResponse('Доступ запрещён', {
         status: 401,
       })
     }
