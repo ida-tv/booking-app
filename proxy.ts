@@ -2,16 +2,13 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
 export function proxy(request: NextRequest) {
-  const url = request.nextUrl
 
-  if (url.pathname.startsWith('/admin')) {
+  if (request.nextUrl.pathname.startsWith('/admin')) {
 
-    const password = request.headers.get('authorization')
+    const cookie = request.cookies.get('admin')?.value
 
-    if (password !== `Bearer ${process.env.ADMIN_PASSWORD}`) {
-      return new NextResponse('Доступ запрещён', {
-        status: 401,
-      })
+    if (cookie !== process.env.ADMIN_PASSWORD) {
+      return NextResponse.redirect(new URL('/login', request.url))
     }
   }
 
